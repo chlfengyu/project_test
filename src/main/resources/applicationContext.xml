@@ -23,7 +23,7 @@
 			</list>
 		</property>
 	</bean>
-	<!-- 数据源  -->
+	<!-- 数据源 配置 -->
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${driver}" />
@@ -33,7 +33,7 @@
 	</bean>
 
 
-
+<!-- 扫描 除了@Controller之外的所有类，已完成Bean创建和自动以来注入，包含注解声明-->
 	<context:component-scan base-package="com.chl.web">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
@@ -46,9 +46,17 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<!-- 扫描mappers并让他们自动装配 -->
+	<!-- 扫描mappers并让他们自动装配   （装配*.xml）-->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.chl.web.system.user.dao" />
 	</bean>
 	
+		<!-- 声明事务管理器	-->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- 启用注解驱动的声明事务支持 -->
+	<tx:annotation-driven />
 </beans>
